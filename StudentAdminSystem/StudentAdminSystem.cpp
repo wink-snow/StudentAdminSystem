@@ -3,24 +3,28 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include"assert.h"
+#pragma warning(disable:6031)
+#define MAX_SIZE 1000
 //定义学生结构主体
 struct student {
-	int no;
-	char name[10];
-	double score[3];
-	double avg;
-	double sum;
+	int no=0;
+	char name[10]=" ";
+	double score[3] = {0.0};
+	double avg=0.0;
+	double sum=0.0;
+	int tip = 0;
 };
-struct student syu[3];
+struct student stu[MAX_SIZE];
 
 int flag = 0;
-
 int count = 0;
 
 void login();
 void menu();
 void input();
 void display();
+void ShowStuData(student stu);
 void sort();
 void insert();
 void remove();
@@ -83,13 +87,15 @@ int main() {
 			printf("\n");
 			system("pause");
 			break;
+		case 7:
+			return 0;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 void login() {
-	char name[10], pwd[10];
+	char name[10] = { 0 }, pwd[10] = { 0 };
 	do {
 		printf("\t\t用户名：");
 		scanf("%s", name);
@@ -132,10 +138,11 @@ void menu() {
 	printf("请选择:");
 }
 void input() {
-	char answer;
+	//char answer;
 	printf("\n\t单个学生信息的循环录入");
+	int i;
 	do {
-		int i;
+		fflush(stdin);
 		do {
 			printf("\n\t学号:");
 			scanf("%d", &stu[count].no);
@@ -150,7 +157,7 @@ void input() {
 			printf("\n\t名字：");
 			scanf("%s", &stu[count].name);
 			for (i = 0; i < strlen(stu[count].name); i++) {
-				if (stu[count].name[i] >= '0' && stu[count].name[i] <= '9') {
+				if (stu[count].name[i] >='0' && stu[count].name[i] <= '9') {
 					printf("\n\t不好意思：名字不能含有数字，请重新输入\n");
 					break;
 				}
@@ -159,7 +166,7 @@ void input() {
 		stu[count].sum = 0;
 		for (int i = 0; i < 3; i++) {
 			printf("\n\t成绩%d:", i + 1);
-			scanf("%1f", &stu[count].score[i]);
+			scanf("%lf", &stu[count].score[i]);
 			if (stu[count].score[i] < 0 || stu[count].score[i]>100) {
 				printf("\n\t不好意思：成绩应为0到100之间的数字，请重新输入哦\n");
 				i--;
@@ -168,16 +175,17 @@ void input() {
 			stu[count].sum += stu[count].score[i];
 		}
 		stu[count].avg = stu[count].sum / 3;
+		stu[count].tip = 1;
 		count++;
 		printf("\n\t是否还进行录入？(y/n):");
-		fflush(stdin);
-		scanf("%c", &answer);
-	} while (answer == 'y' || answer == 'y');
+		fflush(stdin);//getchar()不行？
+		getchar();//fflush(stdin)不行？
+	} while ((getchar())=='y');
 }
 
 void display() {
 	int i;
-	printf("\t学号\t姓名\t语文\t数学\t英语\t总分\t平均分\t排名\n");
+	printf("\t学号\t姓名\t语文\t数学\t英语\t平均分\t总分\n");
 	printf("\t__________________________________________________________\n");
 	for (i = 0; i < count; i++) {
 		printf("\t%d\t%s\t%.lf\t%.lf\t%.lf\t%.lf\t%.lf\n", stu[i].no, stu[i].name, stu[i].score[0], stu[i].score[1], stu[i].score[2], stu[i].avg, stu[i].sum);
@@ -185,9 +193,14 @@ void display() {
 	}
 }
 
+void ShowStuData(student stu) {
+	printf("\t学号\t姓名\t语文\t数学\t英语\t平均分\t总分\n");
+	printf("\t%d\t%s\t%.lf\t%.lf\t%.lf\t%.lf\t%.lf\n", stu.no, stu.name, stu.score[0], stu.score[1], stu.score[2], stu.avg, stu.sum);
+}
 void sort()
 {
 	struct student temp;
+	int i;
 	for (int i = 0; i < count - 1; i++)
 	{
 		for (int j = 0; j < count - 1 - i; j++)
@@ -207,7 +220,6 @@ void insert()
 	struct student newstu;
 	int i;
 	printf("\n\t新学生的信息录入：\n");
-
 	do
 	{
 		printf("\n\t学号：");
@@ -234,104 +246,75 @@ void insert()
 			}
 		}
 	} while (i < strlen(newstu.name));
+	newstu.sum = 0;
+	for (int i = 0; i < 3; i++) {
+		printf("\n\t成绩%d:", i + 1);
+		scanf("%lf", &newstu.score[i]);
+		if (newstu.score[i] < 0 || newstu.score[i]>100) {
+			printf("\n\t不好意思：成绩应为0到100之间的数字，请重新输入哦\n");
+			i--;
+			continue;
+		}
+		newstu.sum += newstu.score[i];
+	}
+	newstu.avg = newstu.sum / 3;
+	newstu.tip = 1;
+	stu[count] = newstu;
+	count++;
 }
 
 
 void remove() {
-	int id, i;
-	char ch;
+	int id, i,j,k;
 	printf("删除学生的记录。\n");
 	printf("请输入学号：");
 	scanf("%d", &id);
-
-	struct Node* current = *headRef;
-	struct Node* prev = NULL;
-
-	// 待删除的记录是头节点
-	if (current != NULL && current->stu.id == id) {
-		getchar();
-		printf("找到该生的记录，如下所示：\n");
-		HH;  //显示记录的标题
-		ShowStuData(&current->stu);
-		printf("是否删除?(Y/N)\n");
-		scanf("%c", &ch);
-		if (ch == 'Y' || ch == 'y') {
-			*headRef = current->next;
-			free(current);
-			printf("删除成功！\n");
-
-			// 添加，修改，删除后都应该重新排序
-
-			return;
+	fflush(stdin);
+	i = 0;
+	do{
+		if (stu[i].no == id) {
+			printf("找到该生的记录，如下所示：\n");
+			ShowStuData(stu[i]);
+			printf("是否删除?(Y/N)\n");
+			getchar();
+			if ((getchar())=='Y') {
+				for (j = i+1,k=i;j < count;j++,k++) {
+					stu[k] = stu[j];
+				}
+				count--;
+				break;
+			}
+			else;
 		}
-	}
-
-	while (current != NULL && current->stu.id != id) {
-		prev = current;
-		current = current->next;
-	}
-
-	if (current == NULL) {
-		printf("没有找到该生的记录。\n");
-		return;
-	}
-
-	getchar();
-	printf("找到该生的记录，如下所示：\n");
-	HH;  //显示记录的标题
-
-	printf("是否删除?(Y/N)\n");
-	scanf("%c", &ch);
-	if (ch == 'Y' || ch == 'y') {
-		prev->next = current->next;
-		free(current);
-		printf("删除成功！\n");
-	}
-	return;
-
+		i++;
+	} while (i < count);
 }
 
 
 
 void search() {
-	int no;
+	char name[10];
+	int i, count = 0;
 	printf("\n\t查找学生的记录。\n");
 	printf("\n\t请输入学生的姓名：");
-	scanf("%s", &no);
-
-	if (bsearch == 0) {
-		no = 1;
-		printf("找到该生的记录，如下所示：\n");
-		printf("该学生信息如下：\n");
-		printf("\t\t───────────────────────────────────────────────────────────\n");
-		printf("\t\t学号：\t");
-		printf("姓名：\t");
-		printf("语文： ");
-		printf("数学： ");
-		printf("英语： ");
-		printf("总分： ");
-		printf("平均分： \n");
-		printf("\t\t───────────────────────────────────────────────────────────\n");
-		printf("\t\t%d\t%s\t%.lf\t%.lf\t%.lf\t%.lf\t%.lf\n", stu[i].no, stu[i].name, stu[i].score[0], stu[i].score[1], stu[i].score[2], stu[i].sum, stu[i].avg);
-		system("pause");
-		break;
-		bsearch = 1;
+	scanf("%s", &name);
+	for (i = 0;stu[i].tip != 0;i++) {
+		count++;
 	}
-
-}
-
+	for (i = 0;i < count;i++) {
+		if (strcmp(name, stu[i].name) == 0) {
+			printf("找到该生的记录，如下所示：\n");
+			printf("该学生信息如下：\n");
+			printf("\t\t───────────────────────────────────────────────────────────\n");
+			printf("\t学号\t姓名\t语文\t数学\t英语\t平均\t总分\n");
+			printf("\t%d\t%s\t%.lf\t%.lf\t%.lf\t%.lf\t%.lf\n", stu[i].no, stu[i].name, stu[i].score[0], stu[i].score[1], stu[i].score[2], stu[i].avg, stu[i].sum);
+			break;
+		}
+		else;
 	}
-
-	if (bsearch == 0) {
-		printf("没有找到该生的记录。\n");
+	if (i == count) {
+		printf("错误，未找到！\n");
 	}
-	else {
-		printf("** 有 %d 条名叫： %s 的学生记录。\n", cnt, no);
-		break;
-	}
-
-	printf("程序结束！\n");
-	return 0;
 }
 
 
