@@ -2,7 +2,7 @@
 
 ![开始界面](https://photobeds-1318438545.cos.ap-nanjing.myqcloud.com/img/MyFistImage.png)
 
-##实现的功能：
+<h2><b>实现的功能：</b></h2>
 
 1. 用户登录的**检测**
 2. **循环录入**单个学生信息
