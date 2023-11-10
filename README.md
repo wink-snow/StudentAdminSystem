@@ -1,4 +1,5 @@
-#学生管理系统
+<h1><b>学生管理系统</b></h1>
+
 ![开始界面](https://photobeds-1318438545.cos.ap-nanjing.myqcloud.com/img/MyFistImage.png)
 
 ##实现的功能：
