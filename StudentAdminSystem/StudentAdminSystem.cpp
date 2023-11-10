@@ -188,7 +188,7 @@ void display() {
 	printf("\t学号\t姓名\t语文\t数学\t英语\t平均分\t总分\n");
 	printf("\t__________________________________________________________\n");
 	for (i = 0; i < count; i++) {
-		printf("\t%d\t%s\t%.lf\t%.lf\t%.lf\t%.lf\t%.lf\n", stu[i].no, stu[i].name, stu[i].score[0], stu[i].score[1], stu[i].score[2], stu[i].avg, stu[i].sum);
+		printf("\t%d\t%s\t%.1lf\t%.1lf\t%.1lf\t%.1lf\t%.1lf\n", stu[i].no, stu[i].name, stu[i].score[0], stu[i].score[1], stu[i].score[2], stu[i].avg, stu[i].sum);
 		printf("\t_______________________________________\n");
 	}
 }
