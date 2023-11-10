@@ -1,6 +1,6 @@
 <h1><b>学生管理系统</b></h1>
 
-![开始界面](https://photobeds-1318438545.cos.ap-nanjing.myqcloud.com/img/MyFistImage.png)
+![在github部署的开始界面图片](https://cdn.jsdelivr.net/gh/wink-snow/piceeimage/image/MyFistImage.png)
 
 <h2><b>实现的功能：</b></h2>
 
